@@ -2,12 +2,16 @@ import React from "react"
 import { Link } from "react-router-dom"
 import { cx } from "classix"
 import { Card, CardHeader, CardBody, CardFooter } from "../Card"
+import { useAppDispatch } from "../../redux/hooks"
+import { init } from "../../redux/feature/quizSlice"
 
 const buttonStyle = cx(
 	"border-solid border-2 border-blue-500 rounded-md px-10 py-2"
 )
 
 const Begin = () => {
+	const dispatch = useAppDispatch()
+
 	return (
 		<Card>
 			<div className="grid grid-flow-row gap-y-32">
@@ -22,7 +26,14 @@ const Begin = () => {
 				</CardBody>
 				<CardFooter>
 					<Link to="/quiz">
-						<button className={buttonStyle}>BEGIN</button>
+						<button
+							className={buttonStyle}
+							onClick={() => {
+								dispatch(init)
+							}}
+						>
+							BEGIN
+						</button>
 					</Link>
 				</CardFooter>
 			</div>

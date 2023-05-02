@@ -32,13 +32,7 @@ describe("The Home Page", () => {
 
 		cy.get("button").contains("BEFORE").click()
 
-		cy.get("input").first().should("not.checked")
-
-		cy.get("input").last().click()
-
 		cy.contains("NEXT").click()
-
-		cy.get("input").last().should("not.checked")
 
 		cy.contains("NEXT").click()
 

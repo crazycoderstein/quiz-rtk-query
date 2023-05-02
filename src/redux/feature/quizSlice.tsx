@@ -29,6 +29,11 @@ export const quizSlice = createSlice({
 				state.quizIndex = 0
 			}
 		},
+		init: (state) => {
+			state.questions = []
+			state.answers = []
+			state.quizIndex = 0
+		},
 		before: (state) => {
 			state.quizIndex -= 1
 		},
@@ -68,7 +73,7 @@ export const selectAnswers = createSelector(
 	(state) => state.answers
 )
 
-export const { postAnswer, postQuestions, before } = quizSlice.actions
+export const { postAnswer, postQuestions, before, init } = quizSlice.actions
 
 export const selectQuizIndex = (state: RootState) => state.quiz.quizIndex
 

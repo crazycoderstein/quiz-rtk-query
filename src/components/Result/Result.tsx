@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { cx } from "classix"
+
 import { Card, CardHeader, CardBody, CardFooter } from "../../components/Card"
 import { useAppSelector } from "../../redux/hooks"
 import { getResult, selectQuestions } from "../../redux/feature/quizSlice"

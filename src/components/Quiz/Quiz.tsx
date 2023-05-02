@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { cx } from "classix"
+
 import { Card, CardHeader, CardBody, CardFooter } from "../../components/Card"
 import { useGetQuestionsQuery } from "../../redux/services/quiz"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
@@ -24,27 +25,21 @@ const Quiz = () => {
 	const quizIndex = useAppSelector(selectQuizIndex)
 	const answers = useAppSelector(selectAnswers)
 
-	const { data, error, isLoading } = useGetQuestionsQuery(undefined, {
-		refetchOnMountOrArgChange: true,
-		skip: false,
-	})
+	const { data, error, isLoading, isFetching } = useGetQuestionsQuery(
+		undefined,
+		{
+			refetchOnMountOrArgChange: true,
+		}
+	)
 
-	const [tBtn, setTBtn] = useState<boolean>(false)
+	const [tBtn, setTBtn] = useState<boolean>(true)
 	const [fBtn, setFBtn] = useState<boolean>(false)
-	const [choice, setChoice] = useState<boolean>(true)
 
 	useEffect(() => {
-		let v1 = false,
+		let v1 = true,
 			v2 = false
-		if (answers[quizIndex] === undefined) {
-			v1 = v2 = false
-		} else if (answers[quizIndex] === true) {
-			v1 = true
-			v2 = false
-		} else {
-			v1 = false
-			v2 = true
-		}
+		if (answers[quizIndex] === true) (v1 = true), (v2 = false)
+		if (answers[quizIndex] === false) (v2 = true), (v1 = false)
 		setTBtn(v1)
 		setFBtn(v2)
 	}, [quizIndex])
@@ -57,7 +52,7 @@ const Quiz = () => {
 		if (quizIndex === 9) {
 			navigate("/result")
 		}
-		dispatch(postAnswer(choice))
+		dispatch(postAnswer(tBtn))
 	}
 
 	const results = data ? (
@@ -82,7 +77,6 @@ const Quiz = () => {
 							name="choice"
 							checked={tBtn}
 							onChange={() => {
-								setChoice(true)
 								setTBtn(true)
 								setFBtn(false)
 							}}
@@ -95,7 +89,6 @@ const Quiz = () => {
 							name="choice"
 							checked={fBtn}
 							onChange={() => {
-								setChoice(false)
 								setFBtn(true)
 								setTBtn(false)
 							}}
@@ -141,7 +134,7 @@ const Quiz = () => {
 
 	let cardContent
 	if (error) cardContent = errorMessage
-	else if (isLoading) cardContent = loadingMessage
+	else if (isLoading || isFetching) cardContent = loadingMessage
 	else cardContent = results
 
 	return <Card>{cardContent}</Card>

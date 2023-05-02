@@ -6,7 +6,6 @@ type Props = {
 }
 
 const style = cx(
-	"mt-24",
 	"bg-slate-300",
 	"h-[40rem]",
 	"w-[35rem]",
